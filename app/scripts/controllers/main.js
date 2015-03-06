@@ -9,8 +9,8 @@ app.controller('MyCtrl', function($scope, TestData) {
         width: 100
     }, {
         field: 'value',
-        displayName: '',
-        cellTemplate: '<div class="renderer" my-data="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
+        displayName: 'portfolio 1',
+        cellTemplate: '<div class="renderer" cell-content="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
         width: 350
     }];
 
@@ -45,23 +45,29 @@ app.controller('MyCtrl', function($scope, TestData) {
                 break;
 
         }
-        TestData[idx].value.series[0].data = randomData();
-        $scope.myData.push(TestData[idx]);
+        if (TestData[idx].value.series) {
+            TestData[idx].value.series[0].data = randomData();
+            $scope.myData.push(TestData[idx]);
+        } else {
+            $scope.myData.push(TestData[idx]);
+        }
+        console.log($scope.myData);
     }
 
-
     $scope.addPortfolio = function() {
-    	var cols = $scope.columns.length;
-    	var fieldName = 'value'+cols;
+        var cols = $scope.columns.length;
+        var fieldName = 'value' + cols;
         $scope.columns.push({
             field: fieldName,
-            displayName: '',
-            cellTemplate: '<div class="renderer" my-data="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
+            displayName: 'portfolio ' + cols,
+            cellTemplate: '<div class="renderer" cell-content="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
             width: 350
         });
         for (var i = 0; i < $scope.myData.length; i++) {
             $scope.myData[i][fieldName] = angular.copy($scope.myData[i].value);
-            $scope.myData[i][fieldName].series[0].data = randomData();
+            if ($scope.myData[i][fieldName].series) {
+                $scope.myData[i][fieldName].series[0].data = randomData();
+            }
         }
         console.log($scope.myData);
         gridLayoutPlugin.updateGridLayout();
@@ -84,13 +90,14 @@ app.directive('renderer', function() {
         replace: true,
         transclude: true,
         scope: {
-            myData: '=myData',
+            cellContent: '=cellContent',
             highcharts: '=highcharts'
         },
-        template: '<div ng-switch on="myData">' +
-            '<div ng-switch-when="4" class="real"><img src="http://placehold.it/350x150"></div>' +
-            '<div ng-switch-when="5" class="false"><highchart id="chart1" config="highcharts"></highchart></div>' +
-            '<div ng-switch-default class="grid"><highchart id="chart2" config="highcharts"></highchart></div>' +
+        template: '<div ng-switch on="cellContent.type">' +
+            '<div ng-switch-when="text" class="real">portfolio: </div>' +
+            '<div ng-switch-when="bar" class="false"><highchart id="chart1" config="highcharts"></highchart></div>' +
+            '<div ng-switch-when="pie" class="false"><highchart id="chart1" config="highcharts"></highchart></div>' +
+            '<div ng-switch-default class="grid">Not supported</div>' +
             '</div>'
     }
 
@@ -107,12 +114,14 @@ app.factory('TestData', function() {
 
     return [{
         name: "Summary",
-        value: '4'
+        value: {
+            type: 'text',
+            data: '4'
+        }
     }, {
         name: "Risk",
-        age: 43,
-        pin: 345,
         value: {
+        	type: 'bar',
             options: {
                 chart: {
                     type: 'bar'
@@ -134,6 +143,7 @@ app.factory('TestData', function() {
     }, {
         name: "Returns",
         value: {
+        	type: 'pie',
             options: {
                 chart: {
                     type: 'pie',

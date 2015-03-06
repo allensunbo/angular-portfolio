@@ -83,10 +83,10 @@ body {
     width: 1000px;
 }
 .real {
-    background: red;
+    
 }
 .false {
-    background: blue;
+    
 }
 .highcharts-container {
     width: 100% !important;
