@@ -1,19 +1,20 @@
-<div class="row">
-<div class="col-xs-4">
-    <button class="col-xs-8" style="margin:10px;" ng-click="addWidget($event)">
+<button ng-click="addPortfolio()">Add Portfolio</button>
+
+<div class="row col-md-2">
+    <button  style="margin:10px;" ng-click="addWidget($event)">
         Summary
     </button>
-    <button class="col-xs-8" style="margin:10px;" ng-click="addWidget($event)">
+    <button  style="margin:10px;" ng-click="addWidget($event)">
         Risk
     </button>
-    <button class="col-xs-8" style="margin:10px;" ng-click="addWidget($event)">
+    <button style="margin:10px;" ng-click="addWidget($event)">
         Returns
     </button>
 </div>
 
-<div class="col-xs-8">
+<div class="row col-md-10">
     <div class="gridStyle" ng-grid="gridOptions">
     </div>
 </div>
 
-</div>
+

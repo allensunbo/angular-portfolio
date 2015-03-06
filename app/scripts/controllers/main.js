@@ -5,7 +5,8 @@ app.controller('MyCtrl', function($scope, TestData) {
     $scope.columns = [{
         field: 'name',
         displayName: 'Type',
-        pinned: true
+        pinned: true,
+        width: 100
     }, {
         field: 'value',
         displayName: 'Value',
@@ -13,6 +14,7 @@ app.controller('MyCtrl', function($scope, TestData) {
         width: 350
     }];
 
+    var gridLayoutPlugin = new ngGridLayoutPlugin();
     $scope.myData = [];
     $scope.gridOptions = {
         data: 'myData',
@@ -21,7 +23,7 @@ app.controller('MyCtrl', function($scope, TestData) {
         enableRowReordering: true,
         enableColumnReordering: true,
         rowHeight: 300,
-        plugins: [new ngGridFlexibleHeightPlugin()]
+        plugins: [new ngGridFlexibleHeightPlugin(), gridLayoutPlugin]
     };
 
     $scope.addWidget = function(event) {
@@ -43,8 +45,34 @@ app.controller('MyCtrl', function($scope, TestData) {
                 break;
 
         }
+        TestData[idx].value.series[0].data = randomData();
         $scope.myData.push(TestData[idx]);
     }
+
+
+    $scope.addPortfolio = function() {
+        $scope.columns.push({
+            field: 'value2',
+            displayName: 'Value2',
+            cellTemplate: '<div class="getData" my-data="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
+            width: 350
+        });
+        for (var i = 0; i < $scope.myData.length; i++) {
+            $scope.myData[i].value2 = angular.copy($scope.myData[i].value);
+            $scope.myData[i].value2.series[0].data = randomData();
+        }
+        console.log($scope.myData);
+        gridLayoutPlugin.updateGridLayout();
+    }
+
+    function randomData() {
+        var data = [];
+        for (var i = 0; i < 5; i++) {
+            data.push(Math.ceil(Math.random() * 20));
+        }
+        return data;
+    }
+
 });
 
 app.directive('getData', function() {
@@ -67,6 +95,14 @@ app.directive('getData', function() {
 });
 
 app.factory('TestData', function() {
+    function randomData() {
+        var data = [];
+        for (var i = 0; i < 5; i++) {
+            data.push(Math.ceil(Math.random() * 20));
+        }
+        return data;
+    }
+
     return [{
         name: "Summary",
         value: '4'
@@ -86,7 +122,7 @@ app.factory('TestData', function() {
                 }
             },
             series: [{
-                data: [10, 15, 12, 8, 7]
+                data: randomData()
             }],
             /* title: {
                  text: 'Risk'
@@ -108,7 +144,7 @@ app.factory('TestData', function() {
                 }
             },
             series: [{
-                data: [10, 15, 12, 8, 7]
+                data: randomData()
             }],
             title: {
                 text: 'Returns',
