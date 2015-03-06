@@ -6,7 +6,8 @@ app.controller('MyCtrl', function($scope, TestData) {
         field: 'name',
         displayName: 'Type',
         pinned: true,
-        width: 100
+        width: 100,
+        cellTemplate: '<div>{{row.getProperty(col.field)}}<button ng-click="removeRow(row)">x</button></div>',
     }, {
         field: 'value',
         displayName: 'portfolio 1',
@@ -73,6 +74,10 @@ app.controller('MyCtrl', function($scope, TestData) {
         gridLayoutPlugin.updateGridLayout();
     }
 
+    $scope.removeRow = function(row) {
+        $scope.myData.splice(row.rowIndex, 1);
+    }
+
     function randomData() {
         var data = [];
         for (var i = 0; i < 5; i++) {
@@ -121,7 +126,7 @@ app.factory('TestData', function() {
     }, {
         name: "Risk",
         value: {
-        	type: 'bar',
+            type: 'bar',
             options: {
                 chart: {
                     type: 'bar'
@@ -143,7 +148,7 @@ app.factory('TestData', function() {
     }, {
         name: "Returns",
         value: {
-        	type: 'pie',
+            type: 'pie',
             options: {
                 chart: {
                     type: 'pie',
