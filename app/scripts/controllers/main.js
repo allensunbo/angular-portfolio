@@ -4,14 +4,8 @@ var app = angular.module('angularDashboardApp');
 app.controller('MyCtrl', function($scope, TestData) {
     $scope.columns = [{
         field: 'name',
-        displayName: 'New Name',
+        displayName: 'Type',
         pinned: true
-    }, {
-        field: 'age',
-        displayName: 'New Age'
-    }, {
-        field: 'pin',
-        displayName: 'Pin'
     }, {
         field: 'value',
         displayName: 'Value',
@@ -41,7 +35,7 @@ app.controller('MyCtrl', function($scope, TestData) {
             case 'Risk':
                 idx = 1;
                 break;
-            case 'Return':
+            case 'Returns':
                 idx = 2;
                 break;
             default:
@@ -51,26 +45,6 @@ app.controller('MyCtrl', function($scope, TestData) {
         }
         $scope.myData.push(TestData[idx]);
     }
-
-    /*$scope.highcharts = {
-        options: {
-            chart: {
-                type: 'bar'
-            }
-        },
-        plotOptions: {
-            bar: {
-                size: '100%'
-            }
-        },
-        series: [{
-            data: [10, 15, 12, 8, 7]
-        }],
-        title: {
-            text: 'Hello'
-        },
-        loading: false
-    }*/
 });
 
 app.directive('getData', function() {
@@ -86,7 +60,7 @@ app.directive('getData', function() {
         template: '<div ng-switch on="myData">' +
             '<div ng-switch-when="4" class="real"><img src="http://placehold.it/350x150"></div>' +
             '<div ng-switch-when="5" class="false"><highchart id="chart1" config="highcharts"></highchart></div>' +
-            '<div ng-switch-default class="grid"><highchart id="chart1" config="highcharts"></highchart></div>' +
+            '<div ng-switch-default class="grid"><highchart id="chart2" config="highcharts"></highchart></div>' +
             '</div>'
     }
 
@@ -94,12 +68,10 @@ app.directive('getData', function() {
 
 app.factory('TestData', function() {
     return [{
-        name: "Moroni",
-        age: 50,
-        pin: 123,
+        name: "Summary",
         value: '4'
     }, {
-        name: "Tiancum",
+        name: "Risk",
         age: 43,
         pin: 345,
         value: {
@@ -116,23 +88,22 @@ app.factory('TestData', function() {
             series: [{
                 data: [10, 15, 12, 8, 7]
             }],
-            title: {
-                text: 'Hello'
-            },
+            /* title: {
+                 text: 'Risk'
+             },*/
             loading: false
         }
     }, {
-        name: "Jacob",
-        age: 27,
-        pin: 567,
+        name: "Returns",
         value: {
             options: {
                 chart: {
-                    type: 'pie'
+                    type: 'pie',
+                    margin: [-30, 30, 30, 30]
                 }
             },
             plotOptions: {
-                bar: {
+                pie: {
                     size: '100%'
                 }
             },
@@ -140,20 +111,13 @@ app.factory('TestData', function() {
                 data: [10, 15, 12, 8, 7]
             }],
             title: {
-                text: 'Hello'
+                text: 'Returns',
+                style: {
+                    display: 'none',
+                },
             },
             loading: false
         }
-    }, {
-        name: "Nephi",
-        age: 29,
-        pin: 789,
-        value: '7'
-    }, {
-        name: "Enos",
-        age: 34,
-        pin: 12,
-        value: '8'
     }];
 
 });

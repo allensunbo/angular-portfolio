@@ -1,16 +1,19 @@
-<div class="pull-left">
-    <button class="row col-xs-10" style="margin:10px;" ng-click="addWidget($event)">
+<div class="row">
+<div class="col-xs-4">
+    <button class="col-xs-8" style="margin:10px;" ng-click="addWidget($event)">
         Summary
     </button>
-    <button class="row col-xs-10" style="margin:10px;" ng-click="addWidget($event)">
+    <button class="col-xs-8" style="margin:10px;" ng-click="addWidget($event)">
         Risk
     </button>
-    <button class="row col-xs-10" style="margin:10px;" ng-click="addWidget($event)">
-        Return
+    <button class="col-xs-8" style="margin:10px;" ng-click="addWidget($event)">
+        Returns
     </button>
 </div>
 
-<div class="pull-left" style="margin-left:0px;">
+<div class="col-xs-8">
     <div class="gridStyle" ng-grid="gridOptions">
     </div>
+</div>
+
 </div>
