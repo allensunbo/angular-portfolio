@@ -12,7 +12,13 @@ app.controller('MyCtrl', function($scope, TestData) {
     }, {
         field: 'pin',
         displayName: 'Pin'
+    }, {
+        field: 'value',
+        displayName: 'Value',
+        cellTemplate: '<div class="getData" my-data="row.getProperty(col.field)" highcharts="highcharts"></div>',
+        width: 350
     }];
+
     $scope.myData = [];
     $scope.gridOptions = {
         data: 'myData',
@@ -20,7 +26,7 @@ app.controller('MyCtrl', function($scope, TestData) {
         columnDefs: 'columns',
         enableRowReordering: true,
         enableColumnReordering: true,
-        rowHeight: 100,
+        rowHeight: 300,
         plugins: [new ngGridFlexibleHeightPlugin()]
     };
 
@@ -45,29 +51,73 @@ app.controller('MyCtrl', function($scope, TestData) {
         }
         $scope.myData.push(TestData[idx]);
     }
+
+    $scope.highcharts = {
+        options: {
+            chart: {
+                type: 'bar'
+            }
+        },
+        plotOptions: {
+            bar: {
+                size: '100%'
+            }
+        },
+        series: [{
+            data: [10, 15, 12, 8, 7]
+        }],
+        title: {
+            text: 'Hello'
+        },
+        loading: false
+    }
+});
+
+app.directive('getData', function() {
+
+    return {
+        restrict: 'C',
+        replace: true,
+        transclude: true,
+        scope: {
+            myData: '=myData',
+            highcharts: '=highcharts'
+        },
+        template: '<div ng-switch on="myData">' +
+            '<div ng-switch-when="4" class="real"><img src="http://placehold.it/350x150"></div>' +
+            '<div ng-switch-when="5" class="false"><highchart id="chart1" config="highcharts"></highchart></div>' +
+            '<div ng-switch-default class="grid">No Data</div>' +
+            '</div>'
+    }
+
 });
 
 app.factory('TestData', function() {
     return [{
         name: "Moroni",
         age: 50,
-        pin: 123
+        pin: 123,
+        value: '4'
     }, {
         name: "Tiancum",
         age: 43,
-        pin: 345
+        pin: 345,
+        value: '5'
     }, {
         name: "Jacob",
         age: 27,
-        pin: 567
+        pin: 567,
+        value: '6'
     }, {
         name: "Nephi",
         age: 29,
-        pin: 789
+        pin: 789,
+        value: '7'
     }, {
         name: "Enos",
         age: 34,
-        pin: 12
+        pin: 12,
+        value: '8'
     }];
 
 });
