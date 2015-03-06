@@ -68,6 +68,7 @@ app.controller('MyCtrl', function($scope, TestData) {
             $scope.myData[i][fieldName] = angular.copy($scope.myData[i].value);
             if ($scope.myData[i][fieldName].series) {
                 $scope.myData[i][fieldName].series[0].data = randomData();
+                $scope.myData[i][fieldName].xAxis.labels.enabled = false;
             }
         }
         console.log($scope.myData);
@@ -143,7 +144,14 @@ app.factory('TestData', function() {
             /* title: {
                  text: 'Risk'
              },*/
-            loading: false
+            loading: false,
+            xAxis: {
+                labels: {
+                    formatter: function() {
+                        return ['Size', 'Momentum', 'Growth', 'Country', 'Currency'][this.value];
+                    }
+                }
+            }
         }
     }, {
         name: "Returns",
