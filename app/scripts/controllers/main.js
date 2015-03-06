@@ -7,7 +7,7 @@ app.controller('MyCtrl', function($scope, TestData) {
         displayName: 'Type',
         pinned: true,
         width: 100,
-        cellTemplate: '<div>{{row.getProperty(col.field)}}<button ng-click="removeRow(row)">x</button></div>',
+        cellTemplate: '<div>{{row.getProperty(col.field)}}<button ng-click="removeRow(row)" class="pull-right">x</button></div>',
     }, {
         field: 'value',
         displayName: 'portfolio 1',
