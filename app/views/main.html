@@ -1,12 +1,16 @@
 <div class="pull-left">
-test
+    <button class="row col-xs-10" style="margin:10px;" ng-click="addWidget($event)">
+        Summary
+    </button>
+    <button class="row col-xs-10" style="margin:10px;" ng-click="addWidget($event)">
+        Risk
+    </button>
+    <button class="row col-xs-10" style="margin:10px;" ng-click="addWidget($event)">
+        Return
+    </button>
 </div>
 
-<div class="pull-left" style="margin-left:10px;">
-<div class="gridStyle" ng-grid="gridOptions">
-  
-</div>
-
-<button ng-click="update_columns($event)">Change Columns</button>
-
+<div class="pull-left" style="margin-left:0px;">
+    <div class="gridStyle" ng-grid="gridOptions">
+    </div>
 </div>

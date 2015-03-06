@@ -1,16 +1,8 @@
 'use strict';
-var app =
-    angular.module('angularDashboardApp');
-app.controller('MyCtrl', function($scope) {
-    $scope.columns = [];
-    $scope.columns[true] = [{
-        field: 'name',
-        displayName: 'Name'
-    }, {
-        field: 'age',
-        displayName: 'Age'
-    }];
-    $scope.columns[false] = [{
+var app = angular.module('angularDashboardApp');
+
+app.controller('MyCtrl', function($scope, TestData) {
+    $scope.columns = [{
         field: 'name',
         displayName: 'New Name',
         pinned: true
@@ -21,9 +13,42 @@ app.controller('MyCtrl', function($scope) {
         field: 'pin',
         displayName: 'Pin'
     }];
-    $scope.displayFlag = true;
-    $scope.columnsSelected = $scope.columns[$scope.displayFlag];
-    $scope.myData = [{
+    $scope.myData = [];
+    $scope.gridOptions = {
+        data: 'myData',
+        enablePinning: true,
+        columnDefs: 'columns',
+        enableRowReordering: true,
+        enableColumnReordering: true,
+        rowHeight: 100,
+        plugins: [new ngGridFlexibleHeightPlugin()]
+    };
+
+    $scope.addWidget = function(event) {
+        console.log('widget added');
+        console.log(event.target.innerText);
+        var idx = 0;
+        switch (event.target.innerText) {
+            case 'Summary':
+                idx = 0;
+                break;
+            case 'Risk':
+                idx = 1;
+                break;
+            case 'Return':
+                idx = 2;
+                break;
+            default:
+                idx = 0;
+                break;
+
+        }
+        $scope.myData.push(TestData[idx]);
+    }
+});
+
+app.factory('TestData', function() {
+    return [{
         name: "Moroni",
         age: 50,
         pin: 123
@@ -44,21 +69,5 @@ app.controller('MyCtrl', function($scope) {
         age: 34,
         pin: 12
     }];
-    $scope.gridOptions = {
-        data: 'myData',
-        enablePinning: true,
 
-        columnDefs: 'columnsSelected',
-        enableRowReordering: true,
-
-        enableColumnReordering: true,
-        rowHeight: 100,
-        plugins: [new ngGridFlexibleHeightPlugin()]
-
-    };
-
-    $scope.update_columns = function($event) {
-        $scope.displayFlag = !$scope.displayFlag;
-        $scope.columnsSelected = $scope.columns[$scope.displayFlag];
-    }
 });
