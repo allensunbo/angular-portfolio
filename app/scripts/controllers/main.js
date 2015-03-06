@@ -9,8 +9,8 @@ app.controller('MyCtrl', function($scope, TestData) {
         width: 100
     }, {
         field: 'value',
-        displayName: 'Value',
-        cellTemplate: '<div class="getData" my-data="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
+        displayName: '',
+        cellTemplate: '<div class="renderer" my-data="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
         width: 350
     }];
 
@@ -51,15 +51,17 @@ app.controller('MyCtrl', function($scope, TestData) {
 
 
     $scope.addPortfolio = function() {
+    	var cols = $scope.columns.length;
+    	var fieldName = 'value'+cols;
         $scope.columns.push({
-            field: 'value2',
-            displayName: 'Value2',
-            cellTemplate: '<div class="getData" my-data="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
+            field: fieldName,
+            displayName: '',
+            cellTemplate: '<div class="renderer" my-data="row.getProperty(col.field)" highcharts="row.getProperty(col.field)"></div>',
             width: 350
         });
         for (var i = 0; i < $scope.myData.length; i++) {
-            $scope.myData[i].value2 = angular.copy($scope.myData[i].value);
-            $scope.myData[i].value2.series[0].data = randomData();
+            $scope.myData[i][fieldName] = angular.copy($scope.myData[i].value);
+            $scope.myData[i][fieldName].series[0].data = randomData();
         }
         console.log($scope.myData);
         gridLayoutPlugin.updateGridLayout();
@@ -75,7 +77,7 @@ app.controller('MyCtrl', function($scope, TestData) {
 
 });
 
-app.directive('getData', function() {
+app.directive('renderer', function() {
 
     return {
         restrict: 'C',
